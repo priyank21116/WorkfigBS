@@ -1,0 +1,9 @@
+ "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyank21116/Inyt.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/priyank21116/Inyt/issues"
+  },
+  "homepage": "https://github.com/priyank21116/Inyt#readme",

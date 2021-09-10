@@ -1,0 +1,32 @@
+GET  http://localhost:9000/temp
+
+###
+
+POST http://localhost:9000/user/signup
+Content-Type: application/json
+
+
+{  "username":"AAA",
+   "name": "Priyank",
+   "phone": 9085879455,
+   "email":" prkgupta@gmail.com",
+   "ad1": "469/253 vikas nagar",
+   "ad2": "Ahinsa chowk",
+   "landmark": "vasul",
+   "pin":893002 ,
+   "city": "jabalpur",
+   "State": "Stg",
+   "password": "1111111",
+}
+
+###
+
+POST http://localhost:9000/uservice
+Content-Type: application/json
+
+
+
+###
+
+POST http://localhost:9000/pser
+Content-Type: application/json
