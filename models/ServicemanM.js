@@ -3,29 +3,29 @@ const mongoose = require('mongoose')
 const SmPerSchema = new mongoose.Schema({
     
             name: String,
-            photo:String,
+            // photo:String,
             about:String,
             phone: Number,
             emergencyPhone :Number,
             email: String,
             password: String,
             adharNo:Number,
-            adharPhoto : String,
+            // adharPhoto : String,
 
             residencial: {
-                  ad1: String,
-                  ad2: String,
-                  landmark: String,
-                  pin: Number,
-                  city: String,
-                  State: String,
+                  Rad1: String,
+                  Rad2: String,
+                  Rlandmark: String,
+                  Rpin: Number,
+                  Rcity: String,
+                  Rstate: String,
             },
             workplace:{
                   ad1w:String,
                   landmarkw:String,
                   pincodew:String,
             },
-             review: [],
+             review:[],
              //{ givenby_id : ,RateOn5 :  ,comment : }
 
 })

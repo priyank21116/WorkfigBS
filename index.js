@@ -7,7 +7,7 @@ const app = express()
 
 
 
-mongoose.connect(process.env.MONGOATLAS_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGOATLAS_URL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false  })
       .then(() => { console.log('Mongo Atlas connected....') })
       .catch((e) => { console.log('Error inmongo Atlas connection') });
 
@@ -20,23 +20,24 @@ app.use(express.urlencoded({ extended: false }))
 
 
 
-const temp = require('./routes/temp');
-app.use('/temp', temp);
 
 const ClientR = require('./routes/Client')
 app.use('/client', ClientR)
 
-const Providers = require('./routes/Serviceman')
-app.use('/pro', Providers)
-
-const ProService = require('./routes/SmService')
-app.use('/pser', ProService)
 
 const CtServiceR = require('./routes/CtService')
 app.use('/ctcurrent', CtServiceR)
 
 
+const Providers = require('./routes/Serviceman')
+console.log("here")
+app.use('/sm', Providers)
 
+const ProService = require('./routes/SmService')
+app.use('/Smser', ProService)
+
+
+ 
 
 const PORT = process.env.PORT || 9000;
 app.listen(9000, () => {
