@@ -8,6 +8,41 @@ const jwtkey =process.env.JWT_SECRET
 
 const ClientPer = require("../models/ClientPerM");
 
+
+
+
+//localhost:9000/sm/registerone
+router.post(
+      "/registerone",
+      async (req, res) => {
+            let { phone } = req.body;
+            console.log("PHONE REGISTER R R<<<<<<<<<<" ,req.body)
+            try {
+                  if (!phone) { return res.status(422).json({ error: " Phone is left empty" }) }
+                  let userRo = await ServicemanM.findOne({ phone });
+                  if (userRo) {
+                        return res.status(400).json({
+                              msg: "Phone Number Already Registered"
+                        });
+                  }
+     
+                  await new ServicemanM({
+                      
+                        phone: phone,
+                 
+                  }).save();
+
+                  res.status(200).json({ "message": "User Registered Successfuly" });
+
+            } catch (err) {
+                  console.log("/localhost:9000/Sm/registerone::", err.message);
+                  res.status(500).send("Error in Saving");
+            }
+      })
+
+
+
+
 //localhost:9000/client/signup
 router.post(
       "/signup",

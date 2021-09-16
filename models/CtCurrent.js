@@ -6,18 +6,13 @@ const CtCurrent = new mongoose.Schema({
             type: ObjectId,
             ref: "Clientpersonal"
       },
-      helpDomain: {type: String, required:true},
-      SpecifyHelp: String,
-      SelectedWorker: {
-            type: ObjectId,
-            ref: "ServicemanPerDetail"
-      },
-      DealSet: {type :Boolean, default: false},
-      WorkDone: {type :Boolean, default: false},
-      livelocation: {
+      livelocation:{
             lat: { type: Number, default: 0 },
             lng: { type: Number, default: 0 }
-      }
+      },
+      helpDomain: {type: String, required:true},
+      SpecifyHelp: String,
+  
 })
 
 module.exports = mongoose.model('Currentclient',CtCurrent)

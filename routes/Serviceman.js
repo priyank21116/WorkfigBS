@@ -11,7 +11,7 @@ const ServicemanM = require("../models/ServicemanM");
 
 const requireLogin = (req, res, next) => {
       const { authorization } = req.headers
-
+       console.log("REquire LOGININNN SERVIEceMAN", req.headers)
       if (!authorization) {
             return res.status(401).json({ error: "User Must be Logged in to use this service" })
       }
@@ -23,7 +23,7 @@ const requireLogin = (req, res, next) => {
 
       } catch (err) {
             console.log(err)
-            return res.status(401).json({ error: err })
+            return res.status(401).statusText("Ok").json({ error: err })
       }
 }
 
@@ -33,6 +33,7 @@ router.post(
       "/registerone",
       async (req, res) => {
             let { phone } = req.body;
+            console.log("PHONE REGISTER R R<<<<<<<<<<" ,req.body)
             try {
                   if (!phone) { return res.status(422).json({ error: " Phone is left empty" }) }
                   let userRo = await ServicemanM.findOne({ phone });
@@ -41,18 +42,11 @@ router.post(
                               msg: "Phone Number Already Registered"
                         });
                   }
-
+     
                   await new ServicemanM({
-                        // name:String,
+                      
                         phone: phone,
-                        // email: String,
-                        // about:String,
-                        // emergencyPhone :Number,
-                        // password: String,
-                        // adharNo:Number,
-                        // workplace:Object,
-                        // residencial:Object,
-                        // review: Array
+                 
                   }).save();
 
                   res.status(200).json({ "message": "User Registered Successfuly" });
@@ -70,7 +64,7 @@ router.patch(
       "/registertwo",
       async (req, res) => {
 
-            let { name, emergencyPhone, about, phone, email, password, adharNo, Rad1, Rad2, Rlandmark, Rpin, Rcity, Rstate, ad1w, landmarkw, pincodew } = req.body;
+            let { name, emergencyPhone, about, phone, email, password, adharNo, Rad1, Rad2, Rlandmark, Rpin, Rcity, Rstate, ad1w, landmarkw, pincodew } = req.body.SmPer;
 
             try {
                   if (!email || !password) {
@@ -109,8 +103,8 @@ router.patch(
                               landmarkw,
                               pincodew,
                         },
-                        password: hashPassword
-
+                        password: password
+                        // password: hashPassword
 
                   }
                   let userRt = await ServicemanM.findOneAndUpdate({ phone }, userRtt, { new: true });
@@ -130,7 +124,7 @@ router.patch(
 router.post(
       "/login",
       async (req, res) => {
-
+            console.log("LoginREquest CANMMME<<<" ,req.body)
             const { phone, password } = req.body;
             try {
 
