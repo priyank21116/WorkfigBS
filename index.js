@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGOATLAS_URL, { useNewUrlParser: true, useUnified
       .catch((e) => { console.log('Error inmongo Atlas connection') });
 
 
-
+      
 
 app.use(express.json())
 app.use(cors())

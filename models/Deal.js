@@ -10,6 +10,14 @@ const DealSet = new mongoose.Schema({
             type: ObjectId,
             ref: "ServicemanPerDetail"
       },
+      // Ctname: "",
+      // CtPerDetail:{
+
+      // },
+      // SMname: "",
+      // SMPerDetail:{
+
+      // },
       SMlocation:{
 
       },
@@ -19,7 +27,7 @@ const DealSet = new mongoose.Schema({
       Domain:String,
       WorkDone: {type :Boolean, default: false},
       dealPrice:Number,
-      SetOnTime: Date
+      SetOnTime: Date.now
 })
 
 module.exports= mongoose.model("AtmomentDeal",DealSet)

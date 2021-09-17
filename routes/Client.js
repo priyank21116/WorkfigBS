@@ -16,7 +16,7 @@ router.post(
       "/registerone",
       async (req, res) => {
             let { phone } = req.body;
-            console.log("PHONE REGISTER R R<<<<<<<<<<", req.body)
+            console.log("Client register one phone::::::", req.body)
             try {
                   if (!phone) { return res.status(422).json({ error: " Phone is left empty" }) }
                   let userRo = await ClientPer.findOne({ phone });
@@ -48,8 +48,8 @@ router.patch(
       "/registertwo",
       async (req, res) => {
 
-            let { name, email, password, ad1, phone, ad2, landmark, pin, city, state } = req.body;
-
+            let { Name, email, password,confirmPassword,emergencyNo, ad1, phone, ad2, landmark, pin, city, sstate } = req.body.SmPer;
+            console.log(" Client register two FUll ::::;",req.body.SmPer)
             try {
                   if (!email || !password) {
                         return res.status(422).json({ error: " Fields are left empty" })
@@ -70,16 +70,17 @@ router.patch(
                   const hashPassword = await bcrypt.hash(password, 12);
 
                   let CmRegt = {
-                        name: name,
+                        Name: Name,
                         // phone: phone,
                         email: email,
+                        emergencyNo:emergencyNo,
                         address: {
                               ad1: ad1,
                               ad2: ad2,
                               landmark: landmark,
                               pin: pin,
                               city: city,
-                              State: state,
+                              sstate: sstate,
                         },
                         // password: hashPassword,
                         password: password
@@ -108,6 +109,7 @@ router.post(
       async (req, res) => {
 
             const { phone, password } = req.body;
+            console.log("CLient  LOGIN ", req.body)
             try {
 
                   if (!password || !phone) {

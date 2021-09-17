@@ -9,7 +9,7 @@ const ServicemanM = require("../models/ServicemanM");
 
 const ActiveSm = require("../models/ActiveSm")
 
-const CtCurrent = require("../models/CtCurrent")
+const ActiveCt = require("../models/ActiveCt")
 
 const requireLogin = (req, res, next) => {
       const { authorization } = req.headers
@@ -25,7 +25,7 @@ const requireLogin = (req, res, next) => {
 
       } catch (err) {
             console.log(err)
-            return res.status(401).statusText("Ok").json({ error: err })
+            return res.status(401).statusText("Fail").json({ error: err })
       }
 }
 
@@ -34,10 +34,10 @@ const requireLogin = (req, res, next) => {
 
 router.post("/ActivateSm", requireLogin,
       async (req, res) => {
-            console.log("ACTIAVTE USER REQ", req.user)
+            console.log("ACTIAVTE SM USER REQ TOKEN", req.user)
             try {
 
-                  let Auser = await ActiveSm.findOne({ _id: req.user.userId })
+                  let Auser = await ActiveSm.findOne({ ServicemanIdentity: req.user.userId })
 
                   if (Auser) {
                         return res.status(400).json({
@@ -57,7 +57,7 @@ router.post("/ActivateSm", requireLogin,
                   res.status(200).json({ "message": "User Id Activated Successfuly" });
 
             } catch (e) {
-                  console.log("http://localhost:9000/Smser/ActivateSm::", e);
+                  console.log("http://localhost:9000/Smser::", e);
                   res.status(500).json({
                         message: "Server Error"
                   });
@@ -72,15 +72,25 @@ router.post("/ActivateSm", requireLogin,
 
 router.post("/DeactivateSm", requireLogin,
 async (req, res) => {
-      console.log("ACTIAVTE USER REQ", req.user)
+      console.log("DEactivate SM USER REQ TOKEN", req.user)
+      
       try {
-            let Auser = await ActiveSm.findOne({ _id: req.user.userId })
+            let Auser = await ActiveSm.findOne({ ServicemanIdentity: req.user.userId })
 
             if (!Auser) {
                   return res.status(400).json({
                         error: "Already deactivated"
                   });
             }
+
+            ActiveSm.findOneAndDelete({ ServicemanIdentity: req.user.userId},function (err,doc){
+                  if(err){
+                        res.status(500).json({err})
+                  }else{
+                        console.log("Deleted doc", doc)
+                        res.status(200).json({"msg":"Deactivated Id"})
+                  }
+            })
 
             
             
@@ -112,7 +122,7 @@ async(req,res)=>{
             let mylocation= AuserMe.livelocation
             let mydomain = AuserMe.Domain
 
-            // const AvailWork= await CtCurrent.Fin
+            // const AvailWork= await ActiveCt.Fin
 
             
 

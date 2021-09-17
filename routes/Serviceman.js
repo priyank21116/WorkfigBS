@@ -33,7 +33,7 @@ router.post(
       "/registerone",
       async (req, res) => {
             let { phone } = req.body;
-            console.log("PHONE REGISTER R R<<<<<<<<<<" ,req.body)
+            console.log("SERVICEman PHONE ENTER" ,req.body)
             try {
                   if (!phone) { return res.status(422).json({ error: " Phone is left empty" }) }
                   let userRo = await ServicemanM.findOne({ phone });
@@ -63,6 +63,8 @@ router.post(
 router.patch(
       "/registertwo",
       async (req, res) => {
+
+            console.log("SERVICEman REgiTER FULL")
 
             let { name, emergencyPhone, about, phone, email, password, adharNo, Rad1, Rad2, Rlandmark, Rpin, Rcity, Rstate, ad1w, landmarkw, pincodew } = req.body.SmPer;
 
@@ -124,7 +126,7 @@ router.patch(
 router.post(
       "/login",
       async (req, res) => {
-            console.log("LoginREquest CANMMME<<<" ,req.body)
+            console.log(" SM  LOGIN REQUEST<<<" ,req.body)
             const { phone, password } = req.body;
             try {
 
@@ -163,6 +165,7 @@ router.post(
 
 router.get("/getSmdetail", requireLogin,
       async (req, res) => {
+            console.log(":::::::::::::::SM GET ALL DETAILS:::::::::::::::")
 
             try {
 
