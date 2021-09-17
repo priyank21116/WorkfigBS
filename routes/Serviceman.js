@@ -137,7 +137,8 @@ router.post(
                         return res.status(400).json({ error: "User Not Exist" });
                   }
 
-                  const isMatch = await bcrypt.compare(password, user.password);
+                  // const isMatch = await bcrypt.compare(password, user.password);
+                  const isMatch = password === user.password
 
                   if (isMatch) {
                         const token = jwt.sign({ userId: user._id }, jwtkey)

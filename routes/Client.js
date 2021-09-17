@@ -4,32 +4,32 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const jwtkey =process.env.JWT_SECRET
+const jwtkey = process.env.JWT_SECRET
 
 const ClientPer = require("../models/ClientPerM");
 
 
 
 
-//localhost:9000/sm/registerone
+//localhost:9000/client/registerone
 router.post(
       "/registerone",
       async (req, res) => {
             let { phone } = req.body;
-            console.log("PHONE REGISTER R R<<<<<<<<<<" ,req.body)
+            console.log("PHONE REGISTER R R<<<<<<<<<<", req.body)
             try {
                   if (!phone) { return res.status(422).json({ error: " Phone is left empty" }) }
-                  let userRo = await ServicemanM.findOne({ phone });
+                  let userRo = await ClientPer.findOne({ phone });
                   if (userRo) {
                         return res.status(400).json({
                               msg: "Phone Number Already Registered"
                         });
                   }
-     
-                  await new ServicemanM({
-                      
+
+                  await new ClientPer({
+
                         phone: phone,
-                 
+
                   }).save();
 
                   res.status(200).json({ "message": "User Registered Successfuly" });
@@ -43,15 +43,15 @@ router.post(
 
 
 
-//localhost:9000/client/signup
-router.post(
-      "/signup",
+//localhost:9000/client/registertwo
+router.patch(
+      "/registertwo",
       async (req, res) => {
 
-            let { name, email, phone, password, ad1, ad2, landmark, pin, city, state } = req.body;
+            let { name, email, password, ad1, phone, ad2, landmark, pin, city, state } = req.body;
 
             try {
-                  if (!email || !password || !phone) {
+                  if (!email || !password) {
                         return res.status(422).json({ error: " Fields are left empty" })
                   }
 
@@ -60,28 +60,18 @@ router.post(
                   });
                   if (user) {
                         return res.status(400).json({
-                              error: "User Already Exists"
-                        });
-                  }
-
-                  let u = await Customer.findOne({
-                        phone
-                  });
-                  if (u) {
-                        return res.status(400).json({
-                              msg: "Phone Number Already Registered"
+                              error: "Email Already Exists"
                         });
                   }
 
 
 
-
-                  const salt = await bcrypt.genSalt(10);
+                  // const salt = await bcrypt.genSalt(10);
                   const hashPassword = await bcrypt.hash(password, 12);
 
-                  await new ClientPer({
+                  let CmRegt = {
                         name: name,
-                        phone: phone,
+                        // phone: phone,
                         email: email,
                         address: {
                               ad1: ad1,
@@ -91,11 +81,17 @@ router.post(
                               city: city,
                               State: state,
                         },
-                        password: hashPassword
+                        // password: hashPassword,
+                        password: password
 
 
-                  }).save();
-                  res.status(200).json({ "message":"User Registered Successfuly" });
+                  }
+                  let CMuserRt = await ClientPer.findOneAndUpdate({ phone }, CmRegt, { new: true });
+
+                  res.status(200).json({
+                        "message": "User Registered Successfuly",
+                         CMuserRt
+                  });
 
             } catch (err) {
                   console.log("/localhost:9000/client/signup::", err.message);
@@ -123,14 +119,14 @@ router.post(
                         return res.status(400).json({ error: "User Not Exist" });
                   }
 
-                  const isMatch = await bcrypt.compare(password, user.password);
-                  
-                  if(isMatch){
-                        const token = jwt.sign({userId:user._id},jwtkey)
-                        res.status(201).json({token: token })
+                  // const isMatch = await bcrypt.compare(password, user.password);
+                  const isMatch = password === user.password
+                  if (isMatch) {
+                        const token = jwt.sign({ userId: user._id }, jwtkey)
+                        res.status(201).json({ token: token })
 
-                  }else{
-                        return res.status(401).json({error: "Incorrect mobile number or Password !" });
+                  } else {
+                        return res.status(401).json({ error: "Incorrect mobile number or Password !" });
                   }
 
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 
 
-const ActiveSmSchema = new mongoose({
+const ActiveSmSchema = new mongoose.Schema({
 
       ServicemanIdentity:{
             type: ObjectId,
