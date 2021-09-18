@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
+const { ObjectId } = mongoose.Schema.Types
 
 const DealSet = new mongoose.Schema({
-      ClientOnSetID:{
+      ClientOnSetID: {
             type: ObjectId,
             ref: "Clientpersonal"
       },
-      ServicemanOnSetID:{
+      ServicemanOnSetID: {
             type: ObjectId,
             ref: "ServicemanPerDetail"
       },
@@ -18,16 +18,16 @@ const DealSet = new mongoose.Schema({
       // SMPerDetail:{
 
       // },
-      SMlocation:{
+      SMlocation: {
 
       },
-      CMlocation:{
+      CMlocation: {
 
       },
-      Domain:String,
-      WorkDone: {type :Boolean, default: false},
-      dealPrice:Number,
-      SetOnTime: Date.now
+      Domain: String,
+      WorkDone: { type: Boolean, default: false },
+      dealPrice: Number,
+      SetOnTime: Date
 })
 
-module.exports= mongoose.model("AtmomentDeal",DealSet)
+module.exports = mongoose.model("AtmomentDeal", DealSet)

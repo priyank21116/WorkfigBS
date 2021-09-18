@@ -48,8 +48,8 @@ router.patch(
       "/registertwo",
       async (req, res) => {
 
-            let { Name, email, password,confirmPassword,emergencyNo, ad1, phone, ad2, landmark, pin, city, sstate } = req.body.SmPer;
-            console.log(" Client register two FUll ::::;",req.body.SmPer)
+            let { Name, email, password,confirmPassword,emergencyNo, ad1, phone, ad2, landmark, pin, city, sstate } = req.body.CmPer;
+            console.log(" Client register two FUll ::::;",req.body.CmPer)
             try {
                   if (!email || !password) {
                         return res.status(422).json({ error: " Fields are left empty" })

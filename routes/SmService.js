@@ -70,7 +70,7 @@ router.post("/ActivateSm", requireLogin,
 //DELETE ACTIVE SM
 // http://localhost:9000/Smser/DeactivateSm
 
-router.post("/DeactivateSm", requireLogin,
+router.delete("/DeactivateSm", requireLogin,
 async (req, res) => {
       console.log("DEactivate SM USER REQ TOKEN", req.user)
       

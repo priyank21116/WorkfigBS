@@ -7,17 +7,20 @@ const jwtkey = process.env.JWT_SECRET
 
 const DealAtNow = require("../models/Deal")
 const ActiveSm = require("../models/ActiveSm")
-import ActiveCt from '../models/ActiveCt';
-// const ActiveCt = require("../models/ActiveCt")
+
+const ActiveCt = require("../models/ActiveCt")
 
 
 const requireLogin = (req, res, next) => {
+      
       const { authorization } = req.headers
+      console.log("::::::::::::::Header",authorization)
       if (!authorization) {
             return res.status(401).json({ error: "User Must be Logged in to use this service" })
       }
       try {
             const [userId] = jwt.verify(authorization, jwtkey)
+            console.log(":::::::::::::::::userId",userId)
             req.user = userId
             next()
       } catch (err) {
@@ -173,12 +176,12 @@ router.post("/setdeal/:serId", requireLogin,
 
 
 
-                  
-// Set CTpersonaldetail
-// Set SM personal detail
+
+                  // Set CTpersonaldetail
+                  // Set SM personal detail
 
 
-                 const newDealNow = await new DealAtNow({
+                  const newDealNow = await new DealAtNow({
 
                         ClientOnSetID: Ctid,
                         ServicemanOnSetID: Smid,
@@ -187,7 +190,7 @@ router.post("/setdeal/:serId", requireLogin,
                         Domain: Domain
 
                   })
-                 await newDealNow.save();
+                  await newDealNow.save();
                   // save below on DealAtNow
                   res.status(200).json({ newDealNow })
 
@@ -212,23 +215,45 @@ router.post("/setdeal/:serId", requireLogin,
 //patch for workdone
 // localhost:9000/ctcurrent/workupdateONdeal
 router.patch("/workupdateONdeal/:dealid",
-async(req,res)=>{
-      console.log("workupdateONdeal",req.body)
-      try {
-            const Deal = await DealAtNow.findOne({ _id:req.params.dealid })
-            
-            
-            
-      } catch (error) {
-            console.log("workupdateONdeal::", error);
-            res.status(500).json({
-                  message: error
-            });
-      }
+      async (req, res) => {
+            console.log("workupdateONdeal", req.body)
+            try {
+                  const Deal = await DealAtNow.findOneAndUpdate({ _id: req.params.dealid }, { WorkDone: req.body.WorkDone }, { new: true })
+                  res.status(200).json({
+                        "message": "User Registered Successfuly",
+                        Deal
+                  });
 
-})
+
+            } catch (error) {
+                  console.log("workupdateONdeal::", error);
+                  res.status(500).json({
+                        message: error
+                  });
+            }
+
+      })
 
 //patch for price
+router.patch("/dealpriceONdeal/:dealid",
+      async (req, res) => {
+            console.log("dealpriceONdeal", req.body)
+            try {
+                  const Deall = await DealAtNow.findOneAndUpdate({ _id: req.params.dealid }, { dealPrice: req.body.dealPrice }, { new: true })
+                  res.status(200).json({
+                        "message": "User Registered Successfuly",
+                        Deall
+                  });
+
+
+            } catch (error) {
+                  console.log("dealpriceONdeal::", error);
+                  res.status(500).json({
+                        message: error
+                  });
+            }
+
+      })
 
 
 //patch rating to SM

@@ -11,7 +11,7 @@ const ServicemanM = require("../models/ServicemanM");
 
 const requireLogin = (req, res, next) => {
       const { authorization } = req.headers
-       console.log("REquire LOGININNN SERVIEceMAN", req.headers)
+      console.log("REquire LOGININNN SERVIEceMAN", req.headers)
       if (!authorization) {
             return res.status(401).json({ error: "User Must be Logged in to use this service" })
       }
@@ -33,7 +33,7 @@ router.post(
       "/registerone",
       async (req, res) => {
             let { phone } = req.body;
-            console.log("SERVICEman PHONE ENTER" ,req.body)
+            console.log("SERVICEman PHONE ENTER", req.body)
             try {
                   if (!phone) { return res.status(422).json({ error: " Phone is left empty" }) }
                   let userRo = await ServicemanM.findOne({ phone });
@@ -42,11 +42,11 @@ router.post(
                               msg: "Phone Number Already Registered"
                         });
                   }
-     
+
                   await new ServicemanM({
-                      
+
                         phone: phone,
-                 
+
                   }).save();
 
                   res.status(200).json({ "message": "User Registered Successfuly" });
@@ -126,7 +126,7 @@ router.patch(
 router.post(
       "/login",
       async (req, res) => {
-            console.log(" SM  LOGIN REQUEST<<<" ,req.body)
+            console.log(" SM  LOGIN REQUEST<<<", req.body)
             const { phone, password } = req.body;
             try {
 
