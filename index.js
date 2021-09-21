@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 const path = require("path");
 var cors = require('cors')
 require('dotenv').config()
@@ -12,7 +13,7 @@ mongoose.connect(process.env.MONGOATLAS_URL, { useNewUrlParser: true, useUnified
       .catch((e) => { console.log('Error inmongo Atlas connection') });
 
 
-
+// app.use(bodyParser.json())
 
 app.use(express.json())
 app.use(cors())

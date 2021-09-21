@@ -3,6 +3,16 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const multer = require('multer');
+
+var storage = multer.memoryStorage()
+// var upload = multer({ storage: storage })
+var upload = multer({ dest: './images' })
+
+var fs = require('fs');
+var sharp = require('sharp');
+
+
 
 const jwtkey = process.env.JWT_SECRET
 
@@ -48,8 +58,8 @@ router.patch(
       "/registertwo",
       async (req, res) => {
 
-            let { Name, email, password,confirmPassword,emergencyNo, ad1, phone, ad2, landmark, pin, city, sstate } = req.body.CmPer;
-            console.log(" Client register two FUll ::::;",req.body.CmPer)
+            let { Name, email, password, confirmPassword, emergencyNo, ad1, phone, ad2, landmark, pin, city, sstate } = req.body.CmPer;
+            console.log(" Client register two FUll ::::;", req.body.CmPer)
             try {
                   if (!email || !password) {
                         return res.status(422).json({ error: " Fields are left empty" })
@@ -73,7 +83,7 @@ router.patch(
                         Name: Name,
                         // phone: phone,
                         email: email,
-                        emergencyNo:emergencyNo,
+                        emergencyNo: emergencyNo,
                         address: {
                               ad1: ad1,
                               ad2: ad2,
@@ -91,7 +101,7 @@ router.patch(
 
                   res.status(200).json({
                         "message": "User Registered Successfuly",
-                         CMuserRt
+                        CMuserRt
                   });
 
             } catch (err) {
@@ -142,7 +152,24 @@ router.post(
 );
 
 
+
+router.post('/upload', upload.single("avatar"), (req, res) => {
+      fs.rename(req.file.path, './images/avatar.jpg', (err) => {
+            console.log(err);
+      })
+      sharp(__dirname + '/images/avatar.jpg').resize(640, 480)
+            .jpeg({ quality: 80 }).toFile(__dirname
+                  + '/images/avatar_preview.jpg');
+
+      return res.json("File Uploaded Successfully!");
+});
+
+
+
 module.exports = router
+
+
+
 
 
 
