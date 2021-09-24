@@ -12,6 +12,7 @@ const ActiveSm = require("../models/ActiveSm")
 const ActiveCt = require("../models/ActiveCt")
 
 const requireLogin = (req, res, next) => {
+      console.log("HERE:::::::::::::::::::::::")
       const { authorization } = req.headers
       console.log("REquire LOGININNN SERVIEceMAN", req.headers)
       if (!authorization) {
@@ -20,7 +21,7 @@ const requireLogin = (req, res, next) => {
       try {
 
             const decoded = jwt.verify(authorization, jwtkey)
-            req.user = decoded
+            req.user = decoded.userId
             next()
 
       } catch (err) {
@@ -47,8 +48,8 @@ router.post("/ActivateSm", requireLogin,
                   await new ActiveSm({
                         ServicemanIdentity: req.user.userId,
                         livelocation: {
-                              lat: req.body.lat,
-                              lng: req.body.lng
+                              lat: req.body.latitude,
+                              lng: req.body.longitude
                         },
                         Domain: req.body.Domain,
 

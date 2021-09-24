@@ -12,16 +12,17 @@ const ActiveCt = require("../models/ActiveCt")
 
 
 const requireLogin = (req, res, next) => {
-      
+
       const { authorization } = req.headers
-      console.log("::::::::::::::Header",authorization)
+      // console.log("::::::::::::::Header", req.headers)
       if (!authorization) {
             return res.status(401).json({ error: "User Must be Logged in to use this service" })
       }
       try {
-            const [userId] = jwt.verify(authorization, jwtkey)
-            console.log(":::::::::::::::::userId",userId)
-            req.user = userId
+            console.log("ithe::::::::", jwt.verify(authorization, jwtkey))
+            const userIdd = jwt.verify(authorization, jwtkey)
+            // console.log(":::::::::::::::::userId",userIdd.userId)
+            req.user = userIdd.userId
             next()
       } catch (err) {
             return res.status(401).json({ error: " INvalid user not verified" })
@@ -32,50 +33,55 @@ const requireLogin = (req, res, next) => {
 //1
 // localhost:9000/ctcurrent/ActivateCtforSERACH
 router.post("/ActivateCtforSERACH", requireLogin, async (req, res) => {
+      console.log("ID>>>>>>>>>>>.", req.user)
       console.log("ACTIVATE CLIENT Search REQUEST", req.body)
       const { lat, lng, helpDomain, SpecifyHelp } = req.body
       try {
-            const user = await ActiveCt.findOne({ ClientIdentity: req.user.userId })
-            if (!user) {
-                  await ActiveCt({
-                        ClientIdentity: req.user.userId,
-                        helpDomain: helpDomain,
-                        SpecifyHelp: SpecifyHelp,
-                        livelocation: {
-                              lat: lat,
-                              lng: lng
-                        },
-
-                  }).save()
-
-                  res.status(200).json({ "message": "Search  Activated Successfuly" });
-            } else {
+            const user = await ActiveCt.findOne({ ClientIdentity: req.user })
+            console.log("USER FOUND ",user)
+            if (user) {
 
                   return res.status(400).json({
                         error: "You are already active to recive work "
                   });
-
-                  //      const  newActivateuser = {
-                  //             ...user,
-                  //             helpDomain: helpDomain,
-                  //             SpecifyHelp: SpecifyHelp,
-                  //             livelocation: {
-                  //                   lat: lat,
-                  //                   lng: lng
-                  //             },
-
-                  //       }
-
-
             }
 
+            await new ActiveCt({
+                  ClientIdentity: req.user,
+                  helpDomain: helpDomain,
+                  SpecifyHelp: SpecifyHelp,
+                  livelocation: {
+                        lat: lat,
+                        lng: lng
+                  },
 
-      } catch (err) {
-            console.log(err.message);
-            res.status(500).send("Ct Serach for domain");
+            }).save();
+
+            res.status(200).json({ "message": "Search  Activated Successfuly" });
       }
-})
+      //      const  newActivateuser = {
+      //             ...user,
+      //             helpDomain: helpDomain,
+      //             SpecifyHelp: SpecifyHelp,
+      //             livelocation: {
+      //                   lat: lat,
+      //                   lng: lng
+      //             },
 
+      //       }
+
+
+
+
+
+      catch (err) {
+            console.log("localhost:9000/ctcurrent/ActivateCtforSERACH", err.message);
+            res.status(500).json({
+                  message: "Server Error CtService"
+            });
+      }
+
+})
 
 // SEACRH DONE or deactive client
 

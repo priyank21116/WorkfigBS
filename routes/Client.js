@@ -57,7 +57,7 @@ router.post(
 router.patch(
       "/registertwo",
       async (req, res) => {
-
+            console.log(" Client register two FUll ::::;", req.body)
             let { Name, email, password, confirmPassword, emergencyNo, ad1, phone, ad2, landmark, pin, city, sstate } = req.body.CmPer;
             console.log(" Client register two FUll ::::;", req.body.CmPer)
             try {
