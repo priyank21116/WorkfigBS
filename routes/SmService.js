@@ -38,7 +38,7 @@ router.post("/ActivateSm", requireLogin,
             console.log("ACTIAVTE SM USER REQ TOKEN", req.user)
             try {
 
-                  let Auser = await ActiveSm.findOne({ ServicemanIdentity: req.user.userId })
+                  let Auser = await ActiveSm.findOne({ ServicemanIdentity: req.user })
 
                   if (Auser) {
                         return res.status(400).json({
@@ -46,7 +46,7 @@ router.post("/ActivateSm", requireLogin,
                         });
                   }
                   await new ActiveSm({
-                        ServicemanIdentity: req.user.userId,
+                        ServicemanIdentity: req.user,
                         livelocation: {
                               lat: req.body.latitude,
                               lng: req.body.longitude
@@ -76,7 +76,7 @@ async (req, res) => {
       console.log("DEactivate SM USER REQ TOKEN", req.user)
       
       try {
-            let Auser = await ActiveSm.findOne({ ServicemanIdentity: req.user.userId })
+            let Auser = await ActiveSm.findOne({ ServicemanIdentity: req.user })
 
             if (!Auser) {
                   return res.status(400).json({
@@ -84,7 +84,7 @@ async (req, res) => {
                   });
             }
 
-            ActiveSm.findOneAndDelete({ ServicemanIdentity: req.user.userId},function (err,doc){
+            ActiveSm.findOneAndDelete({ ServicemanIdentity: req.user},function (err,doc){
                   if(err){
                         res.status(500).json({err})
                   }else{

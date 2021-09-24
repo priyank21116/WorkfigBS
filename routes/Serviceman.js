@@ -72,7 +72,7 @@ router.patch(
                   if (!email || !password) {
                         return res.status(422).json({ error: " Fields are left empty" })
                   }
-                  let userRto = await ServicemanM.findOne({
+                  let userRto = await ServicemanM.findOne({   
                         email
                   });
                   if (userRto) {
