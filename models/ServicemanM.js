@@ -1,9 +1,10 @@
 const mongoose = require('mongoose')
+const {ObjectId} = mongoose.Schema.Types
+
 
 const SmPerSchema = new mongoose.Schema({
 
       name: String,
-
       about: String,
       phone: String,
       emergencyPhone: String,
@@ -24,8 +25,6 @@ const SmPerSchema = new mongoose.Schema({
             contentType: String
       },
 
-
-
       residencial: {
             Rad1: String,
             Rad2: String,
@@ -39,7 +38,10 @@ const SmPerSchema = new mongoose.Schema({
             landmarkw: String,
             pincodew: String,
       },
-      review: [],
+      OnActiveDetails:{
+            type: ObjectId,
+            ref: "ActiveServicePerson"
+      }
       //{ givenby_id : ,RateOn5 :  ,comment : }
 
 })
