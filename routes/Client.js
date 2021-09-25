@@ -8,17 +8,11 @@ const multer = require('multer');
 var storage = multer.memoryStorage()
 // var upload = multer({ storage: storage })
 var upload = multer({ dest: './images' })
-
 var fs = require('fs');
 var sharp = require('sharp');
 
-
-
 const jwtkey = process.env.JWT_SECRET
-
 const ClientPer = require("../models/ClientPerM");
-
-
 
 
 //localhost:9000/client/registerone
@@ -49,7 +43,6 @@ router.post(
                   res.status(500).send("Error in Saving");
             }
       })
-
 
 
 
