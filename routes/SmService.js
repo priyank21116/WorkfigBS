@@ -6,22 +6,24 @@ const jwt = require("jsonwebtoken");
 const jwtkey = process.env.JWT_SECRET
 
 const ServicemanM = require("../models/ServicemanM");
-
+const ClientPerM = require("../models/ClientPerM")
 const ActiveSm = require("../models/ActiveSm")
 
 const ActiveCt = require("../models/ActiveCt")
 
-const requireLogin = (req, res, next) => {
-      console.log("HERE:::::::::::::::::::::::")
+const requireLogin = async(req, res, next) => {
+      // console.log("HERE:::::::::::::::::::::::")
       const { authorization } = req.headers
-      console.log("REquire LOGININNN SERVIEceMAN", req.headers)
+      console.log("REquire LOGININNN SERVIEceMAN", req.headers.authorization)
       if (!authorization) {
             return res.status(401).json({ error: "User Must be Logged in to use this service" })
       }
       try {
 
             const decoded = jwt.verify(authorization, jwtkey)
-            req.user = decoded.userId
+            const Person = await ServicemanM.findOne({"_id" : decoded.userId})
+            req.token = decoded
+            req.user = Person
             next()
 
       } catch (err) {
@@ -31,7 +33,7 @@ const requireLogin = (req, res, next) => {
 }
 
 
-// http://localhost:9000/Smser/ActivateSm
+// http://localhost:9000/Smser/ActivateSm   
 
 router.post("/ActivateSm", requireLogin,
       async (req, res) => {
@@ -135,6 +137,26 @@ async(req,res)=>{
       }
 }
 )
+
+
+router.post("/giveCtreview",requireLogin,async(req,res)=>{
+      try {
+            let Smid =req.user
+            let Ct  = await ClientPerM.findById(req.params.id);
+            if (!doctor) return res.send(404).send("Doctor not found");
+            //Get the doctor
+            doctor = await Doctor.findById(doctor.doctorInfo);
+            //Add the review in array
+            let reviews = [...doctor.reviews, req.body];
+            //Update the reviews array
+            const doctorInfo = await Doctor.findByIdAndUpdate(doctor._id, { reviews }, { new: true });
+            res.status(200).send(doctorInfo);
+        }
+        catch (err) {
+            console.error(err);
+            res.status(400).send(err);
+        }
+})
 
 
 

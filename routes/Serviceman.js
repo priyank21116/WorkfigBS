@@ -5,18 +5,19 @@ const jwt = require("jsonwebtoken");
 
 const jwtkey = process.env.JWT_SECRET
 
+// const { ServicemanM, Revieww } = require("../models/ServicemanM");
+
 const ServicemanM = require("../models/ServicemanM");
-
-
 
 const requireLogin = (req, res, next) => {
       const { authorization } = req.headers
-      console.log("REquire LOGININNN SERVIEceMAN", req.headers)
+      console.log("REquire LOGININNN SERVIEceMAN", authorization)
       if (!authorization) {
+            console.log("1")
             return res.status(401).json({ error: "User Must be Logged in to use this service" })
       }
       try {
-
+           
             const decoded = jwt.verify(authorization, jwtkey)
             req.user = decoded
             next()
@@ -49,11 +50,18 @@ router.post(
 
                   }).save();
 
-                  res.status(200).json({ "message": "User Registered Successfuly" });
+                  res.status(200).json({
+                        message: "User Registered Successfuly",
+                        status: "success",
+                        // data:  on get request
+                  });
 
             } catch (err) {
                   console.log("/localhost:9000/Sm/registerone::", err.message);
-                  res.status(500).send("Error in Saving");
+                  res.status(500).json({
+                        msg: "Error in Saving",
+                        error: err
+                  });
             }
       })
 
@@ -72,7 +80,7 @@ router.patch(
                   if (!email || !password) {
                         return res.status(422).json({ error: " Fields are left empty" })
                   }
-                  let userRto = await ServicemanM.findOne({   
+                  let userRto = await ServicemanM.findOne({
                         email
                   });
                   if (userRto) {

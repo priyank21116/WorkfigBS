@@ -7,3 +7,24 @@
     "url": "https://github.com/priyank21116/Inyt/issues"
   },
   "homepage": "https://github.com/priyank21116/Inyt#readme",
+
+
+  router.patch("/dealpriceONdeal/:dealid",
+      async (req, res) => {
+            console.log("dealpriceONdeal", req.body)
+            try {
+                  const Deall = await DealAtNow.findOneAndUpdate({ _id: req.params.dealid }, { dealPrice: req.body.dealPrice }, { new: true })
+                  res.status(200).json({
+                        "message": "User Registered Successfuly",
+                        Deall
+                  });
+
+
+            } catch (error) {
+                  console.log("dealpriceONdeal::", error);
+                  res.status(500).json({
+                        message: error
+                  });
+            }
+
+      })

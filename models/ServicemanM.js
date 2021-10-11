@@ -1,10 +1,46 @@
 const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
+const { ObjectId } = mongoose.Schema.Types
+
+
+
+
+const Reviews = new mongoose.Schema({
+      Sm_id: {
+            type: ObjectId,
+            index: true,
+            auto: true
+      },
+      givenby_id: {
+            type: ObjectId,
+            index: true,
+            auto: true,
+            ref: ""
+      },
+      givenby_name: String,
+      RateOn5: {
+            type: Number,
+            min: 1,
+            max: 5
+      },
+      comment: String,
+      onDate: {
+            type: Date,
+            default: Date.now()
+      }
+}, { timestamps: true }
+)
+
+
 
 
 const SmPerSchema = new mongoose.Schema({
 
-      name: String,
+      name: {
+            type: String,
+            minlength: 2,
+            maxlength: 200,
+            trim: true
+      },
       about: String,
       phone: String,
       emergencyPhone: String,
@@ -12,17 +48,18 @@ const SmPerSchema = new mongoose.Schema({
       password: String,
       adharNo: String,
 
-      adharPhoto: {
+      adharPhoto:  {
             data: Buffer,
-            contentType: String
+            contentType: String,
       },
       ProfilePhoto: {
             data: Buffer,
-            contentType: String
+            contentType: String,
       },
       validationPhoto: {
             data: Buffer,
-            contentType: String
+            contentType: String,
+
       },
 
       residencial: {
@@ -38,12 +75,22 @@ const SmPerSchema = new mongoose.Schema({
             landmarkw: String,
             pincodew: String,
       },
-      OnActiveDetails:{
+      OnActiveDetails: {
             type: ObjectId,
             ref: "ActiveServicePerson"
-      }
-      //{ givenby_id : ,RateOn5 :  ,comment : }
+      },
+      reviews: [Reviews]
 
-})
 
+}, { timestamps: true })
+
+    
+// ServicemanPerDetail.reviews.push({ obj contain givenbyid name comment....})
+// ServicemanPerDetail.save((err,data)=>{});
+
+
+// const ServicemanPerDetail 
 module.exports = mongoose.model('ServicemanPerDetail', SmPerSchema)
+// const Revieww = mongoose.model('Review', Reviews)
+
+// module.exports = { ServicemanPerDetail, Revieww }
