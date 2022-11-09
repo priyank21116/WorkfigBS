@@ -14,7 +14,7 @@
 - Express
 - Mongo
 - Mongoose
-- Mutter- sharp
+- Mutter-sharp
 - JWT
 - POSTMAN 
 
